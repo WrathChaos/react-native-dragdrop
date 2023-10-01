@@ -1,4 +1,3 @@
-import Text from "./FunctionalComponent/Text";
-import { Hello } from "./StateFulComponent/Hello";
+import DragDrop from "./components/DragDrop";
 
-export { Text, Hello };
+export default DragDrop;
