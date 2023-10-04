@@ -39,7 +39,8 @@ interface DragZoneProps extends ContainerProps {
     hover?: boolean,
   ) => ReactElement;
   itemsDisplay?: Display;
-  numCollumns?: number;
+  draggableItemStyle: ViewStyle;
+  numColumns?: number;
 }
 class DragZone extends Container<DragZoneProps, DragZoneState> {
   ref = React.createRef<View>();
@@ -59,17 +60,20 @@ class DragZone extends Container<DragZoneProps, DragZoneState> {
       changed,
       zoneId,
       itemsDisplay,
-      numCollumns,
+      numColumns,
+      draggableItemStyle,
     } = this.props;
 
-    if (!items || items.length === 0) return null;
+    if (!items || items.length === 0) {
+      return null;
+    }
     return (
       <ItemsContainer
         itemsContainerStyle={{}}
         dragging={false}
         onGrant={onGrant}
         addedHeight={addedHeight}
-        numCollumns={numCollumns}
+        numColumns={numColumns}
         itemsDisplay={itemsDisplay}
         changed={changed}
         draggedElementStyle={draggedElementStyle}
@@ -77,6 +81,7 @@ class DragZone extends Container<DragZoneProps, DragZoneState> {
         itemKeyExtractor={itemKeyExtractor}
         renderItem={renderItem}
         onDragEnd={onDragEnd}
+        draggableItemStyle={draggableItemStyle}
         onDrag={(e, l, cb) => onDrag(e, l, cb, zoneId)}
         items={items}
       />

@@ -52,6 +52,7 @@ class DragItem extends Container<DragItemProps, DragItemState> {
       draggedElementStyle,
       draggableItemStyle,
     } = this.props;
+
     const child = renderItem(item);
     const newChild = React.cloneElement(child, {
       style: {},

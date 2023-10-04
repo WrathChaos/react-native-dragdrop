@@ -6,7 +6,7 @@ import Container, {
   Display,
   LayoutProps,
 } from "./Container";
-import DragZOne from "./DragZone";
+import DragZone from "./DragZone";
 
 interface ZonesContainerState extends ContainerState {
   layout: LayoutProps;
@@ -25,7 +25,7 @@ interface ZonesContainerProps extends ContainerProps {
   itemKeyExtractor: (item: any) => number | string;
   zoneKeyExtractor: (item: any) => number | string;
   itemsDisplay?: Display;
-  numCollumns?: number;
+  numColumns?: number;
   itemsInZoneStyle?: ViewStyle;
   zonesContainerStyle?: ViewStyle;
   onZoneLayoutChange: (zoneId: any, layout: LayoutProps) => any;
@@ -59,21 +59,21 @@ class ZonesContainer extends Container<
       draggedElementStyle,
       addedHeight,
       itemsDisplay,
-      numCollumns,
+      numColumns,
     } = this.props;
     return (
       <View style={zonesContainerStyle}>
         {zones.map((zone) => {
           const key = zoneKeyExtractor(zone);
           return (
-            <DragZOne
+            <DragZone
               onZoneLayoutChange={onZoneLayoutChange}
               zoneId={key}
               key={key}
               renderItem={renderItem}
               addedHeight={addedHeight}
               itemsDisplay={itemsDisplay}
-              numCollumns={numCollumns}
+              numColumns={numColumns}
               changed={changed}
               onGrant={onGrant}
               onDragEnd={onDragEnd}

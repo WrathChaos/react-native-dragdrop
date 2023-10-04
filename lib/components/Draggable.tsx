@@ -14,6 +14,8 @@ export interface DraggableState {
   pan: Animated.ValueXY;
   dragging: boolean;
   pressed: boolean;
+  itemHeight?: number;
+  itemWidth?: number;
 }
 
 export interface DraggableProps {
@@ -31,12 +33,15 @@ export interface DraggableProps {
   onDragEnd: (gesture: PanResponderGestureState) => boolean;
   draggedElementStyle?: ViewStyle;
   style: ViewStyle;
+  draggableItemStyle?: ViewStyle;
 }
 class Draggable extends Component<DraggableProps, DraggableState> {
   state = {
     pan: new Animated.ValueXY(),
     dragging: false,
     pressed: false,
+    itemHeight: undefined,
+    itemWidth: undefined,
   };
   panResponder?: PanResponderInstance;
   onResponderMove = (
@@ -73,7 +78,7 @@ class Draggable extends Component<DraggableProps, DraggableState> {
   onEnd = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
     this.onDragEnd(e, gesture);
   };
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => this.state.pressed,
       onPanResponderGrant: () => {
@@ -99,7 +104,12 @@ class Draggable extends Component<DraggableProps, DraggableState> {
       transform: this.state.pan.getTranslateTransform(),
     };
 
-    let { draggedElementStyle, style, delayLongPress = 100 } = this.props;
+    let {
+      draggedElementStyle,
+      style,
+      delayLongPress = 0,
+      draggableItemStyle,
+    } = this.props;
     if (this.state.pressed) {
       style = { ...style, ...draggedElementStyle };
     }
@@ -108,19 +118,24 @@ class Draggable extends Component<DraggableProps, DraggableState> {
       panStyle.elevation = 1000;
       style = { ...style, ...(draggedElementStyle || { opacity: 0.6 }) };
     }
+
     return (
-      <TouchableOpacity
-        delayLongPress={delayLongPress}
-        onLongPress={() => this.setState({ pressed: true }, () => {})}
+      <Animated.View
+        {...this.panResponder?.panHandlers}
+        style={[panStyle, style]}
       >
-        {" "}
-        <Animated.View
-          {...this.panResponder?.panHandlers}
-          style={[panStyle, style]}
+        <TouchableOpacity
+          style={draggableItemStyle}
+          delayLongPress={delayLongPress}
+          onLayout={(e) => {
+            const { width, height } = e.nativeEvent.layout;
+            this.setState({ itemHeight: height, itemWidth: width });
+          }}
+          onLongPress={() => this.setState({ pressed: true }, () => {})}
         >
           {this.props.children}
-        </Animated.View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Animated.View>
     );
   }
 }

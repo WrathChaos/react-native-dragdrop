@@ -33,7 +33,8 @@ interface ItemsContainerProps extends ContainerProps {
   items: any[];
   renderItem: (item: any) => ReactElement;
   itemsDisplay?: Display;
-  numCollumns?: number;
+  numColumns?: number;
+  draggableItemStyle: ViewStyle;
 }
 class ItemsContainer extends Container<
   ItemsContainerProps,
@@ -62,7 +63,8 @@ class ItemsContainer extends Container<
       itemsInZoneStyle,
       items,
       itemsDisplay,
-      numCollumns,
+      numColumns,
+      draggableItemStyle,
     } = this.props;
     const newItemsInZoneStyle: ViewStyle = {};
     const newStyle: ViewStyle = {};
@@ -79,7 +81,7 @@ class ItemsContainer extends Container<
       newStyle.justifyContent = "space-between";
       newStyle.flexWrap = "wrap";
       newItemsInZoneStyle.width = `${
-        100 / (numCollumns || 1) - (numCollumns && numCollumns > 0 ? 1 : 0)
+        100 / (numColumns || 1) - (numColumns && numColumns > 0 ? 1 : 0)
       }%`;
     }
     return (
@@ -103,6 +105,7 @@ class ItemsContainer extends Container<
               onDragEnd={onDragEnd}
               item={item}
               renderItem={renderItem}
+              draggableItemStyle={draggableItemStyle}
             />
           );
         })}

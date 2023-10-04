@@ -14,6 +14,8 @@ export interface DraggableState {
   pan: Animated.ValueXY;
   dragging: boolean;
   pressed: boolean;
+  itemHeight?: number;
+  itemWidth?: number;
 }
 
 export interface DraggableProps {
@@ -38,6 +40,8 @@ class Draggable extends Component<DraggableProps, DraggableState> {
     pan: new Animated.ValueXY(),
     dragging: false,
     pressed: false,
+    itemHeight: undefined,
+    itemWidth: undefined,
   };
   panResponder?: PanResponderInstance;
   onResponderMove = (
@@ -101,7 +105,7 @@ class Draggable extends Component<DraggableProps, DraggableState> {
     let {
       draggedElementStyle,
       style,
-      delayLongPress = 100,
+      delayLongPress = 0,
       draggableItemStyle,
     } = this.props;
     if (this.state.pressed) {
@@ -112,14 +116,18 @@ class Draggable extends Component<DraggableProps, DraggableState> {
       panStyle.elevation = 1000;
       style = {...style, ...(draggedElementStyle || {opacity: 0.6})};
     }
+
     return (
       <Animated.View
         {...this.panResponder?.panHandlers}
         style={[panStyle, style]}>
         <TouchableOpacity
-          style={{}}
-          hitSlop={{top: 50, bottom: 50, left: 50, right: 50}}
+          style={draggableItemStyle}
           delayLongPress={delayLongPress}
+          onLayout={e => {
+            const {width, height} = e.nativeEvent.layout;
+            this.setState({itemHeight: height, itemWidth: width});
+          }}
           onLongPress={() => this.setState({pressed: true}, () => {})}>
           {this.props.children}
         </TouchableOpacity>

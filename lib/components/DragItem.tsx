@@ -31,6 +31,7 @@ interface DragItemProps extends ContainerProps {
   item: any;
   renderItem: (item: any) => ReactElement;
   delayLongPress?: number;
+  draggableItemStyle: ViewStyle;
 }
 class DragItem extends Container<DragItemProps, DragItemState> {
   state: DragItemState = {
@@ -49,7 +50,9 @@ class DragItem extends Container<DragItemProps, DragItemState> {
       delayLongPress,
       itemsInZoneStyle,
       draggedElementStyle,
+      draggableItemStyle,
     } = this.props;
+
     const child = renderItem(item);
     const newChild = React.cloneElement(child, {
       style: {},
@@ -64,6 +67,7 @@ class DragItem extends Container<DragItemProps, DragItemState> {
         draggedElementStyle={draggedElementStyle}
         delayLongPress={delayLongPress}
         addedHeight={addedHeight}
+        draggableItemStyle={draggableItemStyle}
         style={{
           ...child.props.style,
           ...itemsInZoneStyle,

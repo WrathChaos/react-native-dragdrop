@@ -57,38 +57,36 @@ const App: React.FC<AppProps> = ({style}) => {
         }}
         itemsInZoneDisplay="row"
         itemsDisplay="row"
-        draggableItemStyle={
-          {
-            // width: '100%',
-            // height: '100%',
-            // alignItems: 'center',
-            // justifyContent: 'center',
-            // backgroundColor: 'red',
-          }
-        }
+        draggableItemStyle={{
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
         itemsNumColumns={3}
         itemsInZoneNumColumns={2}
         renderItem={item => {
           return (
-            <View
-              style={{
-                width: '47%',
-                padding: 10,
-                height: 45,
-                borderRadius: 12,
-                marginVertical: 5,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#6dd5ed',
-              }}>
-              <Text
+            <View>
+              <View
                 style={{
-                  fontWeight: '700',
-                  textAlign: 'center',
-                  color: 'white',
+                  width: '100%',
+                  height: 45,
+                  borderRadius: 12,
+                  marginVertical: 5,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#6dd5ed',
                 }}>
-                {item.text}
-              </Text>
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    textAlign: 'center',
+                    color: 'white',
+                  }}>
+                  {item.text}
+                </Text>
+              </View>
             </View>
           );
         }}

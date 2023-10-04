@@ -48,8 +48,9 @@ interface DragDropProps extends ContainerProps {
   ) => ReactElement;
   itemsDisplay?: Display;
   itemsInZoneDisplay?: Display;
-  itemsNumCollumns?: number;
-  itemsInZoneNumCollumns?: number;
+  itemsNumColumns?: number;
+  itemsInZoneNumColumns?: number;
+  draggableItemStyle: ViewStyle;
 }
 
 const PERCENT = 0.15;
@@ -126,9 +127,9 @@ class DragDrop extends Container<DragDropProps, DragDropState> {
     }
     if (!this.timeout) {
       this.timeout = setTimeout(() => {
-        const div = gesture.moveY / (this.state.layout?.height || 0);
+        const _div = gesture.moveY / (this.state.layout?.height || 0);
         let added = parseInt(String(HEIGHT * 0.5));
-        if (div >= 1 - PERCENT) {
+        if (_div >= 1 - PERCENT) {
           let rest: number =
             (this.state.contentSize?.height || 0) -
             this.state.scrollY -
@@ -154,7 +155,7 @@ class DragDrop extends Container<DragDropProps, DragDropState> {
               });
             }
           }
-        } else if (div <= PERCENT) {
+        } else if (_div <= PERCENT) {
           if (this.state.scrollY > 0) {
             let rest: number = this.state.scrollY - added;
             if (parseInt(String(rest)) <= 0) {
@@ -306,8 +307,9 @@ class DragDrop extends Container<DragDropProps, DragDropState> {
       footerComponent,
       itemsDisplay,
       itemsInZoneDisplay,
-      itemsInZoneNumCollumns,
-      itemsNumCollumns,
+      itemsInZoneNumColumns,
+      draggableItemStyle,
+      itemsNumColumns,
     } = this.props;
     const { items, zones, dragging, itemsContainerLayout } = this.state;
     // if (this.state.changed) return <View style={style} />;
@@ -343,9 +345,10 @@ class DragDrop extends Container<DragDropProps, DragDropState> {
           addedHeight={this.state.addedHeight || 0}
           onGrant={(grant) => this.setState({ dragging: grant })}
           renderItem={renderItem}
-          numCollumns={itemsNumCollumns}
+          numColumns={itemsNumColumns}
           itemsDisplay={itemsDisplay}
           draggedElementStyle={draggedElementStyle}
+          draggableItemStyle={draggableItemStyle}
           changed={this.state.changed}
           layout={itemsContainerLayout}
           onLayout={(layout) => this.setState({ itemsContainerLayout: layout })}
@@ -363,7 +366,7 @@ class DragDrop extends Container<DragDropProps, DragDropState> {
           draggedElementStyle={draggedElementStyle}
           onGrant={(grant) => this.setState({ dragging: grant })}
           itemsInZoneStyle={itemsInZoneStyle}
-          numCollumns={itemsInZoneNumCollumns}
+          numColumns={itemsInZoneNumColumns}
           itemsDisplay={itemsInZoneDisplay}
           onZoneLayoutChange={(key, layout) => {
             const zones = [...this.state.zones];
