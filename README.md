@@ -105,9 +105,9 @@ should work of the example project.
 - [x] ~~LICENSE~~
 - [ ] Write an article about the lib on Medium
 
-# Change Log
+# Credits
 
-Change log will be here !
+This is a fork of [react-native-drag-drop](https://github.com/VolkenoMakers/react-native-drag-drop)
 
 ## Author
 
